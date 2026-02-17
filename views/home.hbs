@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   {{> LayoutFile}}
+   
+</head>
+
+<body>
+
+  <!-- ======= Mobile nav toggle button ======= -->
+  <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+  <!-- ======= Header ======= -->
+  {{> Header}}
+ <!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="hero-container" data-aos="fade-in">
+      <h1>Rajeev Prasad</h1>
+      <p>I'm a <span class="typed" data-typed-items="Full Stack Developer"></span></p>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    {{> about}}
+   <!-- End About Section -->
+
+    <!-- ======= Skills Section ======= -->
+    {{> skills}}
+    <!-- End Skills Section -->
+
+    <!-- ======= Resume Section ======= -->
+    {{> resume}}
+  
+         
+    <!-- ======= Contact Section ======= -->
+    {{> contact}}
+    <!-- End Contact Section -->
+
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  {{> Footer}}
+  <!-- End  Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  {{> LayoutFile_2}}
+  <script>
+  const form = document.getElementById("contact-form");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault(); // prevent page reload
+   
+    const formData = new FormData(form);
+
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      subject: formData.get("subject"),
+      message: formData.get("message"),
+    };
+        document.querySelector(".loading").style.display = "block";
+         document.querySelector(".sent-message").style.display = "none";
+          document.querySelector(".error-message").style.display = "none";
+
+    try {
+      
+      const response = await fetch("/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.text();
+      
+      if (response.ok) {
+        document.querySelector(".loading").style.display = "none";
+        document.querySelector(".sent-message").style.display = "block";
+       
+        form.reset();
+      } else {
+        document.querySelector(".loading").style.display = "none";
+        document.querySelector(".error-message").innerText = result;
+        document.querySelector(".error-message").style.display = "block";
+      }
+    } catch (error) {
+      document.querySelector(".loading").style.display = "none";
+      document.querySelector(".error-message").style.display = "block";
+    }
+  });
+  
+</script>
+
+</body>
+
+</html>
